@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Btn, IconCircleBtn } from '../components/ui';
 import { useTheme } from '../hooks/useTheme';
 import { useStore } from '../store/store';
@@ -40,7 +41,7 @@ export function LoggingScreen() {
   const canDefer = hasExercises && workout.exercises.length > 1 && workout.exercises.some((e, i) => i !== curEx && e.sets.some((x) => !x.done));
 
   return (
-    <View style={{ flex: 1, backgroundColor: c.bg }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }} edges={['top', 'bottom']}>
       {/* top bar */}
       <View style={{ paddingTop: 6, paddingHorizontal: 22, paddingBottom: 16, flexDirection: 'row', alignItems: 'center', gap: 14 }}>
         <Pressable onPress={cancelLogging} accessibilityLabel="Minimize workout" style={{ width: 34, height: 34, marginLeft: -8, alignItems: 'center', justifyContent: 'center' }}>
@@ -214,6 +215,6 @@ export function LoggingScreen() {
       )}
 
       <ExerciseSwitcherSheet visible={showPicker} />
-    </View>
+    </SafeAreaView>
   );
 }

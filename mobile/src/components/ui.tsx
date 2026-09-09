@@ -10,6 +10,7 @@ import {
   ViewStyle,
   TextStyle,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '../hooks/useTheme';
 import { fonts, ON_ACCENT } from '../theme';
 
@@ -166,11 +167,12 @@ export function BottomSheet({
   maxHeightPct?: number;
 }) {
   const { c } = useTheme();
+  const insets = useSafeAreaInsets();
   if (!visible) return null;
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <Pressable style={styles2.backdrop} onPress={onClose} />
-      <View style={[styles2.sheet, { backgroundColor: c.sheet, borderColor: c.sheetline, maxHeight: `${maxHeightPct * 100}%` }]}>
+      <View style={[styles2.sheet, { backgroundColor: c.sheet, borderColor: c.sheetline, maxHeight: `${maxHeightPct * 100}%`, paddingBottom: 30 + insets.bottom }]}>
         <View style={[styles2.handle, { backgroundColor: c.t44 }]} />
         {children}
       </View>

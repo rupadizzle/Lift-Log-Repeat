@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Modal, Pressable, ScrollView, Text, TextInput, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { StorageIcon } from '../components/icons';
 import { SwitchToggle } from '../components/ui';
 import { askNotifPermission } from '../hooks/useReminder';
@@ -51,7 +52,7 @@ export function ProfileScreen() {
 
   return (
     <Modal visible transparent={false} animationType="slide" onRequestClose={closeProfile}>
-      <View style={{ flex: 1, backgroundColor: c.bg }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }} edges={['top', 'bottom']}>
         <View style={{ paddingTop: 10, paddingHorizontal: 20, paddingBottom: 14, flexDirection: 'row', alignItems: 'center', gap: 14 }}>
           <Pressable onPress={closeProfile} accessibilityLabel="Close profile" style={{ width: 34, height: 34, marginLeft: -8, alignItems: 'center', justifyContent: 'center' }}>
             <Text style={{ color: c.fg, fontSize: 26 }}>‹</Text>
@@ -203,7 +204,7 @@ export function ProfileScreen() {
             <Text style={{ fontSize: 15, fontFamily: fonts.bodySemibold, color: c.danger }}>Erase all data</Text>
           </Pressable>
         </ScrollView>
-      </View>
+      </SafeAreaView>
     </Modal>
   );
 }

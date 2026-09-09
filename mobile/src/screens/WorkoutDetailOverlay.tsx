@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Modal, Pressable, ScrollView, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { IconCircleBtn } from '../components/ui';
 import { useTheme } from '../hooks/useTheme';
 import { useStore } from '../store/store';
@@ -29,7 +30,7 @@ export function WorkoutDetailOverlay() {
 
   return (
     <Modal visible transparent={false} animationType="slide" onRequestClose={closeDetail}>
-      <View style={{ flex: 1, backgroundColor: c.bg }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: c.bg }} edges={['top', 'bottom']}>
         <View style={{ paddingTop: 10, paddingHorizontal: 22, paddingBottom: 16, flexDirection: 'row', alignItems: 'center', gap: 14 }}>
           <Pressable onPress={closeDetail} accessibilityLabel="Back to today" style={{ width: 34, height: 34, marginLeft: -8, alignItems: 'center', justifyContent: 'center' }}>
             <Text style={{ color: c.fg, fontSize: 22 }}>‹</Text>
@@ -127,7 +128,7 @@ export function WorkoutDetailOverlay() {
             </Pressable>
           )}
         </ScrollView>
-      </View>
+      </SafeAreaView>
     </Modal>
   );
 }
