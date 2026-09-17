@@ -10,6 +10,10 @@ export function playRestChime() {
   try {
     const player = createAudioPlayer(chimeSource);
     player.play();
+    // The chime is ~0.42s (see gen-chime.js); release the native player
+    // shortly after it finishes so repeated rest completions across a long
+    // session don't accumulate player instances.
+    setTimeout(() => { try { player.remove(); } catch {} }, 1000);
   } catch {
     // audio unavailable — the visual cue still fires
   }

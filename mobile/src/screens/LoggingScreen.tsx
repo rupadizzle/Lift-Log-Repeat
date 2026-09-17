@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Btn, IconCircleBtn } from '../components/ui';
 import { useTheme } from '../hooks/useTheme';
 import { useStore } from '../store/store';
-import { computeCurrentSet, computeProgress } from '../store/derive';
+import { computeCurrentSet, computeProgress, unitHelpers } from '../store/derive';
 import { fonts } from '../theme';
 import { fmtClock } from '../utils';
 import { ExerciseSwitcherSheet } from './ExerciseSwitcherSheet';
@@ -16,6 +16,7 @@ export function LoggingScreen() {
 
   const cur = useMemo(() => computeCurrentSet(state), [state]);
   const progress = useMemo(() => computeProgress(state), [state]);
+  const { stepU } = unitHelpers(units);
 
   const cancelLogging = useStore((s) => s.cancelLogging);
   const finish = useStore((s) => s.finish);
@@ -134,7 +135,7 @@ export function LoggingScreen() {
                   Weight · {units}
                 </Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                  <IconCircleBtn glyph="−" size={38} onPress={() => step(curEx, curSet, 'kg', -1)} />
+                  <IconCircleBtn glyph="−" size={38} onPress={() => step(curEx, curSet, 'kg', -stepU)} />
                   <TextInput
                     value={cur.kgDisplay}
                     onChangeText={(v) => setField(curEx, curSet, 'kg', v)}
@@ -143,7 +144,7 @@ export function LoggingScreen() {
                     placeholderTextColor={c.t6a}
                     style={{ width: 96, textAlign: 'center', fontFamily: fonts.display, fontSize: 32, fontWeight: '600' as any, color: c.fg }}
                   />
-                  <IconCircleBtn glyph="+" size={38} onPress={() => step(curEx, curSet, 'kg', 1)} />
+                  <IconCircleBtn glyph="+" size={38} onPress={() => step(curEx, curSet, 'kg', stepU)} />
                 </View>
               </View>
               <View style={{ flex: 1, alignItems: 'center' }}>
