@@ -46,7 +46,7 @@ function mapStatus(status: string): NotifPermission {
 export async function getNotifPermission(): Promise<NotifPermission> {
   try {
     const m = await loadNotifications();
-    if (!m) return 'denied';
+    if (!m) return 'undetermined';
     const res = await m.getPermissionsAsync();
     return mapStatus(res.status);
   } catch {
@@ -57,7 +57,7 @@ export async function getNotifPermission(): Promise<NotifPermission> {
 export async function requestNotifPermission(): Promise<NotifPermission> {
   try {
     const m = await loadNotifications();
-    if (!m) return 'denied';
+    if (!m) return 'undetermined';
     const res = await m.requestPermissionsAsync();
     return mapStatus(res.status);
   } catch {

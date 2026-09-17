@@ -360,7 +360,7 @@ export function canCreateExercise(s: AppState, query: string): boolean {
 // ------------------------------------------------------ Workout detail VM -
 
 export interface DetailSetVM { idx: number; val: string; best: boolean }
-export interface DetailExerciseVM { name: string; pr: boolean; e1rmLine: string; hasE1rm: boolean; sets: DetailSetVM[] }
+export interface DetailExerciseVM { name: string; exI: number; pr: boolean; e1rmLine: string; hasE1rm: boolean; sets: DetailSetVM[] }
 export interface DetailVM {
   name: string; date: string; duration: string;
   volume: string; volUnit: string; sets: number; prs: number; prNote: string;
@@ -384,11 +384,17 @@ export function computeDetail(s: AppState, de: HistoryEntry | null): DetailVM | 
   const prNames = prMapFor(s).get(de) || [];
   const isMine = s.saved.includes(de);
   const exercises: DetailExerciseVM[] = log
-    .map((ex) => {
+    // exI must be the exercise's real index in `log` (== `_log`/`_w.exercises`
+    // once done-filtered) — that's what editSavedSet/addSavedSet/removeSavedSet
+    // index into. Capture it here, before the .filter() below can drop an
+    // exercise (a resumable `_w` session can have one with zero done sets
+    // sitting mid-array) and shift array positions out from under it.
+    .map((ex, trueIndex) => {
       const bi = ex.sets.length ? topIdx(ex.sets) : -1;
       const top1rm = ex.sets.reduce((a, st) => Math.max(a, est1rm(st.kg, st.reps)), 0);
       return {
         name: ex.name,
+        exI: trueIndex,
         pr: prNames.includes(ex.name),
         e1rmLine: top1rm > 0 ? 'Est. 1RM ' + toU(r1(top1rm)) + ' ' + s.units : '',
         hasE1rm: top1rm > 0,

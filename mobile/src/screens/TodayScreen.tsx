@@ -114,21 +114,32 @@ export function TodayScreen() {
             else if (cell.isToday || cell.isFuture) openCalEditDate(cell.iso!, cell.wd!);
             else openBacklogDate(cell.iso!, cell.wd!);
           };
+          // React Native has no CSS box-shadow ring — approximate the
+          // original's "bg gap + accent ring" halo (marks today when it's
+          // also a trained/green day) with a fixed-size outer border instead
+          // of an outer glow, so the ringed cell doesn't grow and shove its
+          // grid neighbors.
           return (
-            <Pressable
+            <View
               key={i}
-              onPress={onPress}
               style={{
                 width: cellSize, height: 36, marginRight: isCol7 ? 0 : GAP, marginBottom: GAP,
-                borderRadius: 10, alignItems: 'center', justifyContent: 'center', gap: 3,
-                backgroundColor: bg,
-                borderWidth: border ? 1.5 : 0, borderColor: border,
-                ...(ring ? { shadowColor: c.acctFill, borderWidth: 2, borderColor: c.bg } : {}),
+                borderRadius: 11, borderWidth: ring ? 2 : 0, borderColor: ring ? c.acctFill : 'transparent',
+                padding: ring ? 2 : 0,
               }}
             >
-              <Text style={{ fontFamily: fonts.num, fontSize: 12, fontWeight: cell.worked ? '700' as any : '600' as any, color: textColor, lineHeight: 14 }}>{cell.num}</Text>
-              <View style={{ width: 4, height: 4, borderRadius: 2, backgroundColor: cell.planned && !cell.worked ? c.acct : 'transparent' }} />
-            </Pressable>
+              <Pressable
+                onPress={onPress}
+                style={{
+                  flex: 1, borderRadius: ring ? 8 : 10, alignItems: 'center', justifyContent: 'center', gap: 3,
+                  backgroundColor: bg,
+                  borderWidth: border ? 1.5 : 0, borderColor: border,
+                }}
+              >
+                <Text style={{ fontFamily: fonts.num, fontSize: 12, fontWeight: cell.worked ? '700' as any : '600' as any, color: textColor, lineHeight: 14 }}>{cell.num}</Text>
+                <View style={{ width: 4, height: 4, borderRadius: 2, backgroundColor: cell.planned && !cell.worked ? c.acct : 'transparent' }} />
+              </Pressable>
+            </View>
           );
         })}
       </View>

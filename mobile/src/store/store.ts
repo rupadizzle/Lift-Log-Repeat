@@ -260,6 +260,10 @@ export const useStore = create<Store>()(
     tick: () => {
       const s = get();
       if (!s.workout) return;
+      // Captured before the producer runs — matches the original's
+      // `s.rest` (state as of the *previous* tick), not the value this
+      // same tick is about to overwrite `d.rest` with a few lines down.
+      const wasCounting = s.rest > 0;
       let fireAlert = false;
       set((d) => {
         if (d.logging) d.elapsed = Math.floor((Date.now() - d.startTs) / 1000);
@@ -267,7 +271,6 @@ export const useStore = create<Store>()(
           const left = Math.max(0, Math.ceil((d.restEnd - Date.now()) / 1000));
           if (left !== d.rest) d.rest = left;
           if (left === 0) {
-            const wasCounting = d.rest > 0 || d.restEnd > 0;
             d.restEnd = 0;
             if (wasCounting) {
               d.restDone = true;
@@ -685,7 +688,7 @@ export const useStore = create<Store>()(
       if (i < 0) return;
       set((d) => {
         const e2: SavedEntry = JSON.parse(JSON.stringify(entry));
-        e2._log = entryLog(entry);
+        e2._log = entryLog(e2);
         delete e2._w;
         const setEntry = e2._log[exI].sets[setI];
         const U = d.units;
@@ -706,7 +709,7 @@ export const useStore = create<Store>()(
       if (i < 0) return;
       set((d) => {
         const e2: SavedEntry = JSON.parse(JSON.stringify(entry));
-        e2._log = entryLog(entry);
+        e2._log = entryLog(e2);
         delete e2._w;
         const sets = e2._log[exI].sets;
         const last = sets[sets.length - 1] || { kg: 0, reps: 8 };
@@ -722,7 +725,7 @@ export const useStore = create<Store>()(
       if (i < 0) return;
       set((d) => {
         const e2: SavedEntry = JSON.parse(JSON.stringify(entry));
-        e2._log = entryLog(entry);
+        e2._log = entryLog(e2);
         delete e2._w;
         e2._log[exI].sets.splice(setI, 1);
         e2._log = e2._log.filter((ex) => ex.sets.length);

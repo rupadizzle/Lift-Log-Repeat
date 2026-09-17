@@ -37,6 +37,7 @@ export function ProfileScreen() {
     ? 'Off — no nudge on training days'
     : state.notifPerm === 'granted' ? 'System notification while the app is open'
     : state.notifPerm === 'denied' ? 'Blocked by your device settings — shows in-app instead'
+    : state.notifPerm === 'undetermined' ? 'Unsupported in Expo Go on Android — shows in-app instead'
     : 'Shows in-app · tap to allow system notifications';
 
   const notifTimeLabel = (state.notifHour % 12 === 0 ? 12 : state.notifHour % 12) + (state.notifHour < 12 ? ' am' : ' pm');

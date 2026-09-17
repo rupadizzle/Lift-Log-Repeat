@@ -68,8 +68,8 @@ export function WorkoutDetailOverlay() {
           </View>
           <Text style={{ fontSize: 12, color: c.t6a, lineHeight: 17, marginTop: -12, marginBottom: 18 }}>{detail.prNote}</Text>
 
-          {detail.exercises.map((ex, exI) => (
-            <View key={ex.name + exI} style={{ paddingVertical: 13, borderTopWidth: 1, borderTopColor: c.w10 }}>
+          {detail.exercises.map((ex) => (
+            <View key={ex.name + ex.exI} style={{ paddingVertical: 13, borderTopWidth: 1, borderTopColor: c.w10 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 12 }}>
                 <View style={{ flex: 1, minWidth: 0 }}>
                   <Text style={{ fontSize: 17, fontFamily: fonts.bodySemibold, color: c.fg }}>{ex.name}</Text>
@@ -89,20 +89,20 @@ export function WorkoutDetailOverlay() {
                   {st.best && <Text style={{ color: c.acct, fontSize: 13 }}>✦</Text>}
                   {editSets && detail.isMine && (
                     <View style={{ flexDirection: 'row', alignItems: 'center', gap: 7, width: '100%', paddingLeft: 34 }}>
-                      <IconCircleBtn glyph="−" size={stepBtnSize} label="Less weight" onPress={() => editSavedSet(de, exI, st.idx, 'kg', -unitStep(state.units))} />
-                      <IconCircleBtn glyph="+" size={stepBtnSize} label="More weight" onPress={() => editSavedSet(de, exI, st.idx, 'kg', unitStep(state.units))} />
+                      <IconCircleBtn glyph="−" size={stepBtnSize} label="Less weight" onPress={() => editSavedSet(de, ex.exI, st.idx, 'kg', -unitStep(state.units))} />
+                      <IconCircleBtn glyph="+" size={stepBtnSize} label="More weight" onPress={() => editSavedSet(de, ex.exI, st.idx, 'kg', unitStep(state.units))} />
                       <Text style={{ fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', color: c.t6a, fontFamily: fonts.bodySemibold }}>{state.units}</Text>
-                      <IconCircleBtn glyph="−" size={stepBtnSize} label="Fewer reps" onPress={() => editSavedSet(de, exI, st.idx, 'reps', -1)} />
-                      <IconCircleBtn glyph="+" size={stepBtnSize} label="More reps" onPress={() => editSavedSet(de, exI, st.idx, 'reps', 1)} />
+                      <IconCircleBtn glyph="−" size={stepBtnSize} label="Fewer reps" onPress={() => editSavedSet(de, ex.exI, st.idx, 'reps', -1)} />
+                      <IconCircleBtn glyph="+" size={stepBtnSize} label="More reps" onPress={() => editSavedSet(de, ex.exI, st.idx, 'reps', 1)} />
                       <Text style={{ fontSize: 11, letterSpacing: 1.5, textTransform: 'uppercase', color: c.t6a, fontFamily: fonts.bodySemibold }}>reps</Text>
                       <View style={{ flex: 1 }} />
-                      <IconCircleBtn glyph="✕" size={stepBtnSize} label="Delete set" onPress={() => removeSavedSet(de, exI, st.idx)} />
+                      <IconCircleBtn glyph="✕" size={stepBtnSize} label="Delete set" onPress={() => removeSavedSet(de, ex.exI, st.idx)} />
                     </View>
                   )}
                 </View>
               ))}
               {editSets && detail.isMine && (
-                <Pressable onPress={() => addSavedSet(de, exI)} style={{ marginTop: 6, alignSelf: 'flex-start', borderWidth: 1.5, borderStyle: 'dashed', borderColor: c.w20, borderRadius: 999, paddingVertical: 7, paddingHorizontal: 14 }}>
+                <Pressable onPress={() => addSavedSet(de, ex.exI)} style={{ marginTop: 6, alignSelf: 'flex-start', borderWidth: 1.5, borderStyle: 'dashed', borderColor: c.w20, borderRadius: 999, paddingVertical: 7, paddingHorizontal: 14 }}>
                   <Text style={{ color: c.t8a, fontFamily: fonts.bodySemibold, fontSize: 13 }}>+ Add set</Text>
                 </Pressable>
               )}
